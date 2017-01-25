@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="sdk.sample.MainActivity"
+    tools:layout_height="wrap_content">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/nameLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/displayNameField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    tools:text="Name" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/imageLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nameLayout"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/profileImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    app:srcCompat="@android:color/background_light" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/userDataLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageLayout"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/userDataLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imageLayout"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:id="@+id/textView9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="User ID:"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold" />
+
+                    <TextView
+                        android:id="@+id/userIDField"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TextView" />
+
+                    <TextView
+                        android:id="@+id/textView11"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Status Message:"
+                        android:textAlignment="textStart"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold" />
+
+                    <TextView
+                        android:id="@+id/statusMessageField"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TextView" />
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Access Token:"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold" />
+
+                    <TextView
+                        android:id="@+id/accessTokenField"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="TextView" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonlayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/userDataLayout"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/profileButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Get Profile" />
+
+                <Button
+                    android:id="@+id/refreshButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Refresh Token" />
+
+                <Button
+                    android:id="@+id/verifyButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Verify Token" />
+
+                <Button
+                    android:id="@+id/logoutButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Logout" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

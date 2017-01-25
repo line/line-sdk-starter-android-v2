@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Android SDK V2 Starter</string>
+    <string name="profile_screen_label">User Profile</string>
+    <string name="profile_display_name_label">Display Name:</string>
+    <string name="profile_mid_label">MID:</string>
+    <string name="profile_status_message_label">Status Message:</string>
+    <string name="profile_image_label">Profile Image URL:</string>
+    <string name="no_profile_image_set">Profile Image Not Set</string>
+</resources>
