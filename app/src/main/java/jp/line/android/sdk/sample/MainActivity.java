@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.linecorp.linesdk.auth.LineLoginApi;
 import com.linecorp.linesdk.auth.LineLoginResult;
@@ -19,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Button a2aButton = (Button) findViewById(R.id.login_button);
+        final TextView a2aButton = (TextView) findViewById(R.id.login_button);
         a2aButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final Button browserLoginButton = (Button) findViewById(R.id.browser_login_button);
+        final TextView browserLoginButton = (TextView) findViewById(R.id.browser_login_button);
         browserLoginButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {

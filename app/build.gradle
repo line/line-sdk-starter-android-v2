@@ -24,9 +24,9 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.android.support:customtabs:23.2.1'
-    compile(name:'line-sdk-4.0.0', ext:'aar')
+    compile(name:'line-sdk-4.0.5', ext:'aar')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
 }
