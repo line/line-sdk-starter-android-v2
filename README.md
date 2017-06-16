@@ -26,7 +26,7 @@ This is a sample application for LINE Android SDK V2. It demonstrates the follow
 
 <kbd><img src="app_screenshot.png"></kbd>
 
-The **APP2APP LOGIN** button will use the LINE App to log in and the **WEBLOGIN** button will open a Web Login screen inside of a Chrome custom tab.
+The **Login with LINE** button will use the LINE App to log in and the **Browser Login** button will open a Web Login screen inside of a Chrome custom tab.
 
 After logging in, the user's profile information and access token will be displayed on the screen in addition four buttons:
 
