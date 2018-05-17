@@ -62,58 +62,49 @@
                 android:layout_below="@+id/imageLayout"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/userDataLayout"
+
+                <TextView
+                    android:id="@+id/textView9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/imageLayout"
-                    android:orientation="vertical">
+                    android:text="User ID:"
+                    android:textSize="18sp"
+                    android:textStyle="normal|bold" />
 
+                <TextView
+                    android:id="@+id/userIDField"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
 
-                    <TextView
-                        android:id="@+id/textView9"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="User ID:"
-                        android:textSize="18sp"
-                        android:textStyle="normal|bold" />
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Status Message:"
+                    android:textAlignment="textStart"
+                    android:textSize="18sp"
+                    android:textStyle="normal|bold" />
 
-                    <TextView
-                        android:id="@+id/userIDField"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="TextView" />
+                <TextView
+                    android:id="@+id/statusMessageField"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
 
-                    <TextView
-                        android:id="@+id/textView11"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Status Message:"
-                        android:textAlignment="textStart"
-                        android:textSize="18sp"
-                        android:textStyle="normal|bold" />
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Access Token:"
+                    android:textSize="18sp"
+                    android:textStyle="normal|bold" />
 
-                    <TextView
-                        android:id="@+id/statusMessageField"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="TextView" />
-
-                    <TextView
-                        android:id="@+id/textView13"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Access Token:"
-                        android:textSize="18sp"
-                        android:textStyle="normal|bold" />
-
-                    <TextView
-                        android:id="@+id/accessTokenField"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="TextView" />
-
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/accessTokenField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
 
             </LinearLayout>
 
