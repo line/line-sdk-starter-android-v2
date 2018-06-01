@@ -311,7 +311,7 @@ public class PostLoginActivity extends AppCompatActivity {
         profileText.setText(intentProfile.getUserId());
 
         profileText = (TextView) findViewById(R.id.statusMessageField);
-        profileText.setText(intentProfile.getUserId());
+        profileText.setText(intentProfile.getStatusMessage());
 
         profileText = (TextView) findViewById(R.id.accessTokenField);
         profileText.setText(intentCredential.getAccessToken().getAccessToken());
