@@ -1,5 +1,9 @@
 package jp.line.android.sdk.sample;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -27,19 +31,14 @@ import com.linecorp.linesdk.LineProfile;
 import com.linecorp.linesdk.api.LineApiClient;
 import com.linecorp.linesdk.api.LineApiClientBuilder;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-
-
 public class PostLoginActivity extends AppCompatActivity {
 
     private LineApiClient lineApiClient;
 
     // Method for preventing orientation changes during ASyncTasks
-    private void lockScreenOrientation(){
+    private void lockScreenOrientation() {
         int currentOrientation = getResources().getConfiguration().orientation;
-        if (currentOrientation == Configuration.ORIENTATION_PORTRAIT){
+        if (currentOrientation == Configuration.ORIENTATION_PORTRAIT) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -47,8 +46,83 @@ public class PostLoginActivity extends AppCompatActivity {
     }
 
     // This method is used to reenable orientation changes after an ASyncTask is finished.
-    private void unlockScreenOrientation(){
+    private void unlockScreenOrientation() {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_post_login);
+
+        LineApiClientBuilder apiClientBuilder = new LineApiClientBuilder(getApplicationContext(),
+                                                                         Constants.CHANNEL_ID);
+        lineApiClient = apiClientBuilder.build();
+
+        // Profile Button Click Listener
+        final Button profileButton = findViewById(R.id.profileButton);
+
+        profileButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                new GetProfileTask().execute();
+            }
+        });
+
+        // Refresh Button Click Listener
+        final Button refreshButton = findViewById(R.id.refreshButton);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                new RefreshTokenTask().execute();
+            }
+
+        });
+
+        // Verify Button Click Listener
+        final Button verifyButton = findViewById(R.id.verifyButton);
+        verifyButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                new VerifyTokenTask().execute();
+            }
+        });
+
+        // Logout Button Click Listener
+        final Button logoutButton = findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                new LogoutTask().execute();
+                finish();
+            }
+        });
+
+        // Get the intent so that we can get information from the previous activity
+        Intent intent = getIntent();
+        LineProfile intentProfile = intent.getParcelableExtra("line_profile");
+        LineCredential intentCredential = intent.getParcelableExtra("line_credential");
+
+        Uri pictureUrl = intentProfile.getPictureUrl();
+
+        if (pictureUrl != null) {
+            Log.i("PostLoginActivity", "Picture URL: " + pictureUrl.toString());
+            new ImageLoaderTask().execute(pictureUrl.toString());
+        }
+
+        TextView profileText;
+
+        profileText = findViewById(R.id.displayNameField);
+        profileText.setText(intentProfile.getDisplayName());
+
+        profileText = findViewById(R.id.userIDField);
+        profileText.setText(intentProfile.getUserId());
+
+        profileText = findViewById(R.id.statusMessageField);
+        profileText.setText(intentProfile.getUserId());
+
+        profileText = findViewById(R.id.accessTokenField);
+        profileText.setText(intentCredential.getAccessToken().getAccessToken());
     }
 
     public static class ProfileDialogFragment extends DialogFragment {
@@ -57,20 +131,18 @@ public class PostLoginActivity extends AppCompatActivity {
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             LayoutInflater inflater = getActivity().getLayoutInflater();
             View view = inflater.inflate(R.layout.profile_dialog, null);
 
-
-            TextView textview = (TextView) view.findViewById(R.id.profileName);
+            TextView textview = view.findViewById(R.id.profileName);
             textview.setText(profileInfo.getDisplayName());
-            textview = (TextView) view.findViewById(R.id.profileMessage);
+            textview = view.findViewById(R.id.profileMessage);
             textview.setText(profileInfo.getStatusMessage());
-            textview = (TextView) view.findViewById(R.id.profileMid);
+            textview = view.findViewById(R.id.profileMid);
             textview.setText(profileInfo.getUserId());
             Uri pictureUrl = profileInfo.getPictureUrl();
-            textview = (TextView) view.findViewById(R.id.profileImageUrl);
+            textview = view.findViewById(R.id.profileImageUrl);
 
             // If the user's profile picture is not set, the picture url will be null.
             if (pictureUrl != null) {
@@ -96,15 +168,16 @@ public class PostLoginActivity extends AppCompatActivity {
         }
     }
 
-
     public class ImageLoaderTask extends AsyncTask<String, String, Bitmap> {
 
-        final static String TAG = "ImageLoaderTask";
+        static final String TAG = "ImageLoaderTask";
 
-        protected void onPreExecute(){
+        @Override
+        protected void onPreExecute() {
             lockScreenOrientation();
         }
 
+        @Override
         protected Bitmap doInBackground(String... strings) {
             Bitmap bitmap = null;
             try {
@@ -116,20 +189,20 @@ public class PostLoginActivity extends AppCompatActivity {
             return bitmap;
         }
 
+        @Override
         protected void onPostExecute(Bitmap bitmap) {
-            ImageView profileImageView = (ImageView) findViewById(R.id.profileImageView);
+            ImageView profileImageView = findViewById(R.id.profileImageView);
             profileImageView.setImageBitmap(bitmap);
             unlockScreenOrientation();
         }
     }
 
-
     public class RefreshTokenTask extends AsyncTask<Void, Void, LineApiResponse<LineAccessToken>> {
 
-        final static String TAG = "RefreshTokenTask";
+        static final String TAG = "RefreshTokenTask";
 
         @Override
-        protected void onPreExecute(){
+        protected void onPreExecute() {
             lockScreenOrientation();
         }
 
@@ -141,16 +214,18 @@ public class PostLoginActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(LineApiResponse<LineAccessToken> response) {
-
             if (response.isSuccess()) {
-                String updatedAccessToken = lineApiClient.getCurrentAccessToken().getResponseData().getAccessToken();
+                String updatedAccessToken =
+                        lineApiClient.getCurrentAccessToken().getResponseData().getAccessToken();
 
                 // Update the view
-                TextView accessTokenField = (TextView) findViewById(R.id.accessTokenField);
+                TextView accessTokenField = findViewById(R.id.accessTokenField);
                 accessTokenField.setText(updatedAccessToken);
-                Toast.makeText(getApplicationContext(), "Access Token has been refreshed.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Access Token has been refreshed.", Toast.LENGTH_SHORT)
+                     .show();
             } else {
-                Toast.makeText(getApplicationContext(), "Could not refresh the access token.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Could not refresh the access token.",
+                               Toast.LENGTH_SHORT).show();
                 Log.e(TAG, response.getErrorData().toString());
             }
 
@@ -160,29 +235,29 @@ public class PostLoginActivity extends AppCompatActivity {
 
     public class VerifyTokenTask extends AsyncTask<Void, Void, LineApiResponse<LineCredential>> {
 
-        final static String TAG = "VerifyTokenTask";
+        static final String TAG = "VerifyTokenTask";
 
         @Override
-        protected void onPreExecute(){
+        protected void onPreExecute() {
             lockScreenOrientation();
         }
 
         @Override
         protected LineApiResponse<LineCredential> doInBackground(Void... params) {
-
             return lineApiClient.verifyToken();
         }
 
         @Override
         protected void onPostExecute(LineApiResponse<LineCredential> response) {
-
             if (response.isSuccess()) {
-                StringBuilder toastStringBuilder = new StringBuilder("Access Token is VALID and contains the permissions ");
+                StringBuilder toastStringBuilder = new StringBuilder(
+                        "Access Token is VALID and contains the permissions ");
 
                 for (String temp : response.getResponseData().getPermission()) {
                     toastStringBuilder.append(temp + ", ");
                 }
-                Toast.makeText(getApplicationContext(), toastStringBuilder.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), toastStringBuilder.toString(), Toast.LENGTH_SHORT)
+                     .show();
 
             } else {
                 Toast.makeText(getApplicationContext(), "Access Token is NOT VALID", Toast.LENGTH_SHORT).show();
@@ -193,12 +268,10 @@ public class PostLoginActivity extends AppCompatActivity {
 
     public class GetProfileTask extends AsyncTask<Void, Void, LineApiResponse<LineProfile>> {
 
-        private ProfileDialogFragment fragment;
-
-        final static String TAG = "GetProfileTask";
+        static final String TAG = "GetProfileTask";
 
         @Override
-        protected void onPreExecute(){
+        protected void onPreExecute() {
             lockScreenOrientation();
         }
 
@@ -209,8 +282,7 @@ public class PostLoginActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(LineApiResponse<LineProfile> apiResponse) {
-
-            if(apiResponse.isSuccess()) {
+            if (apiResponse.isSuccess()) {
                 ProfileDialogFragment newFragment = new ProfileDialogFragment();
                 newFragment.setProfileInfo(apiResponse.getResponseData());
                 newFragment.show(getFragmentManager(), null);
@@ -224,10 +296,10 @@ public class PostLoginActivity extends AppCompatActivity {
 
     public class LogoutTask extends AsyncTask<Void, Void, LineApiResponse> {
 
-        final static String TAG = "LogoutTask";
+        static final String TAG = "LogoutTask";
 
         @Override
-        protected void onPreExecute(){
+        protected void onPreExecute() {
             lockScreenOrientation();
         }
 
@@ -237,9 +309,8 @@ public class PostLoginActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(LineApiResponse apiResponse){
-
-            if(apiResponse.isSuccess()){
+        protected void onPostExecute(LineApiResponse apiResponse) {
+            if (apiResponse.isSuccess()) {
                 Toast.makeText(getApplicationContext(), "Logout Successful", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getApplicationContext(), "Logout Failed", Toast.LENGTH_SHORT).show();
@@ -247,86 +318,5 @@ public class PostLoginActivity extends AppCompatActivity {
             }
             unlockScreenOrientation();
         }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_login);
-
-        LineApiClientBuilder apiClientBuilder = new LineApiClientBuilder(getApplicationContext(), Constants.CHANNEL_ID);
-        lineApiClient = apiClientBuilder.build();
-
-        // Profile Button Click Listener
-        final Button profileButton = (Button) findViewById(R.id.profileButton);
-
-        profileButton.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                new GetProfileTask().execute();
-            }
-        });
-
-
-        // Refresh Button Click Listener
-        final Button refreshButton = (Button) findViewById(R.id.refreshButton);
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-
-                new RefreshTokenTask().execute();
-            }
-
-        });
-
-        // Verify Button Click Listener
-        final Button verifyButton = (Button) findViewById(R.id.verifyButton);
-        verifyButton.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-
-                new VerifyTokenTask().execute();
-            }
-
-        });
-
-        // Logout Button Click Listener
-        final Button logoutButton = (Button) findViewById(R.id.logoutButton);
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-
-                new LogoutTask().execute();
-                finish();
-            }
-
-        });
-
-        // Get the intent so that we can get information from the previous activity
-        Intent intent = getIntent();
-        LineProfile intentProfile = intent.getParcelableExtra("line_profile");
-        LineCredential intentCredential = intent.getParcelableExtra("line_credential");
-
-        Uri pictureUrl = intentProfile.getPictureUrl();
-
-        if (pictureUrl != null) {
-            Log.i("PostLoginActivity", "Picture URL: " + pictureUrl.toString());
-            new ImageLoaderTask().execute(pictureUrl.toString());
-        }
-
-        TextView profileText;
-
-        profileText = (TextView) findViewById(R.id.displayNameField);
-        profileText.setText(intentProfile.getDisplayName());
-
-        profileText = (TextView) findViewById(R.id.userIDField);
-        profileText.setText(intentProfile.getUserId());
-
-        profileText = (TextView) findViewById(R.id.statusMessageField);
-        profileText.setText(intentProfile.getUserId());
-
-        profileText = (TextView) findViewById(R.id.accessTokenField);
-        profileText.setText(intentCredential.getAccessToken().getAccessToken());
-
     }
 }

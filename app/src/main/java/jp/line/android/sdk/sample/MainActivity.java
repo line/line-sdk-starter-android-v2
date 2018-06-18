@@ -19,8 +19,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final TextView a2aButton = (TextView) findViewById(R.id.login_button);
-        a2aButton.setOnClickListener(new View.OnClickListener() {
+        final TextView appToAppButton = findViewById(R.id.login_button);
+        appToAppButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
 
@@ -28,14 +28,13 @@ public class MainActivity extends AppCompatActivity {
                     // App to App Login
                     Intent LoginIntent = LineLoginApi.getLoginIntent(v.getContext(), Constants.CHANNEL_ID);
                     startActivityForResult(LoginIntent, REQUEST_CODE);
-
                 } catch (Exception e) {
                     Log.e("ERROR", e.toString());
                 }
             }
         });
 
-        final TextView browserLoginButton = (TextView) findViewById(R.id.browser_login_button);
+        final TextView browserLoginButton = findViewById(R.id.browser_login_button);
         browserLoginButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
@@ -44,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
                     // Browser Login
                     Intent LoginIntent = LineLoginApi.getLoginIntentWithoutLineAppAuth(v.getContext(), Constants.CHANNEL_ID);
                     startActivityForResult(LoginIntent, REQUEST_CODE);
-
                 } catch (Exception e) {
                     Log.e("ERROR", e.toString());
                 }
@@ -64,9 +62,7 @@ public class MainActivity extends AppCompatActivity {
         LineLoginResult result = LineLoginApi.getLoginResultFromIntent(data);
 
         switch (result.getResponseCode()) {
-
             case SUCCESS:
-
                 Intent transitionIntent = new Intent(this, PostLoginActivity.class);
                 transitionIntent.putExtra("line_profile", result.getLineProfile());
                 transitionIntent.putExtra("line_credential", result.getLineCredential());
