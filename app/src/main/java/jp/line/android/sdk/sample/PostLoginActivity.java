@@ -128,15 +128,18 @@ public class PostLoginActivity extends AppCompatActivity {
 
         final static String TAG = "RefreshTokenTask";
 
+        @Override
         protected void onPreExecute(){
             lockScreenOrientation();
         }
 
+        @Override
         protected LineApiResponse<LineAccessToken> doInBackground(Void... params) {
 
             return lineApiClient.refreshAccessToken();
         }
 
+        @Override
         protected void onPostExecute(LineApiResponse<LineAccessToken> response) {
 
             if (response.isSuccess()) {
@@ -159,15 +162,18 @@ public class PostLoginActivity extends AppCompatActivity {
 
         final static String TAG = "VerifyTokenTask";
 
+        @Override
         protected void onPreExecute(){
             lockScreenOrientation();
         }
 
+        @Override
         protected LineApiResponse<LineCredential> doInBackground(Void... params) {
 
             return lineApiClient.verifyToken();
         }
 
+        @Override
         protected void onPostExecute(LineApiResponse<LineCredential> response) {
 
             if (response.isSuccess()) {
@@ -191,14 +197,17 @@ public class PostLoginActivity extends AppCompatActivity {
 
         final static String TAG = "GetProfileTask";
 
+        @Override
         protected void onPreExecute(){
             lockScreenOrientation();
         }
 
+        @Override
         protected LineApiResponse<LineProfile> doInBackground(Void... params) {
             return lineApiClient.getProfile();
         }
 
+        @Override
         protected void onPostExecute(LineApiResponse<LineProfile> apiResponse) {
 
             if(apiResponse.isSuccess()) {
@@ -217,14 +226,17 @@ public class PostLoginActivity extends AppCompatActivity {
 
         final static String TAG = "LogoutTask";
 
+        @Override
         protected void onPreExecute(){
             lockScreenOrientation();
         }
 
+        @Override
         protected LineApiResponse doInBackground(Void... params) {
             return lineApiClient.logout();
         }
 
+        @Override
         protected void onPostExecute(LineApiResponse apiResponse){
 
             if(apiResponse.isSuccess()){
@@ -237,6 +249,7 @@ public class PostLoginActivity extends AppCompatActivity {
         }
     }
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_login);
@@ -294,7 +307,6 @@ public class PostLoginActivity extends AppCompatActivity {
         LineProfile intentProfile = intent.getParcelableExtra("line_profile");
         LineCredential intentCredential = intent.getParcelableExtra("line_credential");
 
-        ImageView profileImageView = (ImageView) findViewById(R.id.profileImageView);
         Uri pictureUrl = intentProfile.getPictureUrl();
 
         if (pictureUrl != null) {
