@@ -8,8 +8,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -33,22 +31,9 @@ import com.linecorp.linesdk.api.LineApiClientBuilder;
 
 public class PostLoginActivity extends AppCompatActivity {
 
+    private static final String TAG = "PostLoginActivity";
+
     private LineApiClient lineApiClient;
-
-    // Method for preventing orientation changes during ASyncTasks
-    private void lockScreenOrientation() {
-        int currentOrientation = getResources().getConfiguration().orientation;
-        if (currentOrientation == Configuration.ORIENTATION_PORTRAIT) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        } else {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-    }
-
-    // This method is used to reenable orientation changes after an ASyncTask is finished.
-    private void unlockScreenOrientation() {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +49,7 @@ public class PostLoginActivity extends AppCompatActivity {
 
         profileButton.setOnClickListener(new View.OnClickListener() {
 
+            @Override
             public void onClick(View v) {
                 new GetProfileTask().execute();
             }
@@ -73,16 +59,17 @@ public class PostLoginActivity extends AppCompatActivity {
         final Button refreshButton = findViewById(R.id.refreshButton);
         refreshButton.setOnClickListener(new View.OnClickListener() {
 
+            @Override
             public void onClick(View v) {
                 new RefreshTokenTask().execute();
             }
-
         });
 
         // Verify Button Click Listener
         final Button verifyButton = findViewById(R.id.verifyButton);
         verifyButton.setOnClickListener(new View.OnClickListener() {
 
+            @Override
             public void onClick(View v) {
                 new VerifyTokenTask().execute();
             }
@@ -92,6 +79,7 @@ public class PostLoginActivity extends AppCompatActivity {
         final Button logoutButton = findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(new View.OnClickListener() {
 
+            @Override
             public void onClick(View v) {
                 new LogoutTask().execute();
                 finish();
@@ -106,7 +94,7 @@ public class PostLoginActivity extends AppCompatActivity {
         Uri pictureUrl = intentProfile.getPictureUrl();
 
         if (pictureUrl != null) {
-            Log.i("PostLoginActivity", "Picture URL: " + pictureUrl.toString());
+            Log.i(TAG, "Picture URL: " + pictureUrl);
             new ImageLoaderTask().execute(pictureUrl.toString());
         }
 
@@ -170,12 +158,7 @@ public class PostLoginActivity extends AppCompatActivity {
 
     public class ImageLoaderTask extends AsyncTask<String, String, Bitmap> {
 
-        static final String TAG = "ImageLoaderTask";
-
-        @Override
-        protected void onPreExecute() {
-            lockScreenOrientation();
-        }
+        private static final String TAG = "ImageLoaderTask";
 
         @Override
         protected Bitmap doInBackground(String... strings) {
@@ -193,22 +176,15 @@ public class PostLoginActivity extends AppCompatActivity {
         protected void onPostExecute(Bitmap bitmap) {
             ImageView profileImageView = findViewById(R.id.profileImageView);
             profileImageView.setImageBitmap(bitmap);
-            unlockScreenOrientation();
         }
     }
 
     public class RefreshTokenTask extends AsyncTask<Void, Void, LineApiResponse<LineAccessToken>> {
 
-        static final String TAG = "RefreshTokenTask";
-
-        @Override
-        protected void onPreExecute() {
-            lockScreenOrientation();
-        }
+        private static final String TAG = "RefreshTokenTask";
 
         @Override
         protected LineApiResponse<LineAccessToken> doInBackground(Void... params) {
-
             return lineApiClient.refreshAccessToken();
         }
 
@@ -228,19 +204,10 @@ public class PostLoginActivity extends AppCompatActivity {
                                Toast.LENGTH_SHORT).show();
                 Log.e(TAG, response.getErrorData().toString());
             }
-
-            unlockScreenOrientation();
         }
     }
 
     public class VerifyTokenTask extends AsyncTask<Void, Void, LineApiResponse<LineCredential>> {
-
-        static final String TAG = "VerifyTokenTask";
-
-        @Override
-        protected void onPreExecute() {
-            lockScreenOrientation();
-        }
 
         @Override
         protected LineApiResponse<LineCredential> doInBackground(Void... params) {
@@ -262,18 +229,12 @@ public class PostLoginActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(getApplicationContext(), "Access Token is NOT VALID", Toast.LENGTH_SHORT).show();
             }
-            unlockScreenOrientation();
         }
     }
 
     public class GetProfileTask extends AsyncTask<Void, Void, LineApiResponse<LineProfile>> {
 
-        static final String TAG = "GetProfileTask";
-
-        @Override
-        protected void onPreExecute() {
-            lockScreenOrientation();
-        }
+        private static final String TAG = "GetProfileTask";
 
         @Override
         protected LineApiResponse<LineProfile> doInBackground(Void... params) {
@@ -286,22 +247,16 @@ public class PostLoginActivity extends AppCompatActivity {
                 ProfileDialogFragment newFragment = new ProfileDialogFragment();
                 newFragment.setProfileInfo(apiResponse.getResponseData());
                 newFragment.show(getFragmentManager(), null);
-                unlockScreenOrientation();
             } else {
                 Toast.makeText(getApplicationContext(), "Failed to get profile.", Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "Failed to get Profile: " + apiResponse.getErrorData().toString());
+                Log.e(TAG, "Failed to get Profile: " + apiResponse.getErrorData());
             }
         }
     }
 
     public class LogoutTask extends AsyncTask<Void, Void, LineApiResponse> {
 
-        static final String TAG = "LogoutTask";
-
-        @Override
-        protected void onPreExecute() {
-            lockScreenOrientation();
-        }
+        private static final String TAG = "LogoutTask";
 
         @Override
         protected LineApiResponse doInBackground(Void... params) {
@@ -314,9 +269,8 @@ public class PostLoginActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Logout Successful", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getApplicationContext(), "Logout Failed", Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "Logout Failed: " + apiResponse.getErrorData().toString());
+                Log.e(TAG, "Logout Failed: " + apiResponse.getErrorData());
             }
-            unlockScreenOrientation();
         }
     }
 }
