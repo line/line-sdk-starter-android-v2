@@ -20,5 +20,5 @@ android {
 dependencies {
     implementation "com.android.support:appcompat-v7:27.1.1"
     implementation "com.android.support:customtabs:27.1.1"
-    implementation name:'line-sdk-4.0.8', ext:'aar'
+    implementation name:'line-sdk-4.0.10', ext:'aar'
 }
