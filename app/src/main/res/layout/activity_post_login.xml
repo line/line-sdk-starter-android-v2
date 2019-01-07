@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
@@ -30,7 +31,7 @@
                     android:id="@+id/displayNameField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
                     android:text="TextView"
                     android:textAlignment="center"
                     android:textSize="24sp"
@@ -50,7 +51,7 @@
                     android:id="@+id/profileImageView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
                     app:srcCompat="@android:color/background_light" />
             </LinearLayout>
 
@@ -61,59 +62,49 @@
                 android:layout_below="@+id/imageLayout"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/userDataLayout"
+                <TextView
+                    android:id="@+id/textView9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/imageLayout"
-                    android:orientation="vertical">
+                    android:text="User ID:"
+                    android:textSize="18sp"
+                    android:textStyle="normal|bold" />
 
+                <TextView
+                    android:id="@+id/userIDField"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
 
-                    <TextView
-                        android:id="@+id/textView9"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="User ID:"
-                        android:textSize="18sp"
-                        android:textStyle="normal|bold" />
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Status Message:"
+                    android:textAlignment="textStart"
+                    android:layout_gravity="start"
+                    android:textSize="18sp"
+                    android:textStyle="normal|bold" />
 
-                    <TextView
-                        android:id="@+id/userIDField"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="TextView" />
+                <TextView
+                    android:id="@+id/statusMessageField"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
 
-                    <TextView
-                        android:id="@+id/textView11"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Status Message:"
-                        android:textAlignment="textStart"
-                        android:layout_gravity="start"
-                        android:textSize="18sp"
-                        android:textStyle="normal|bold" />
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Access Token:"
+                    android:textSize="18sp"
+                    android:textStyle="normal|bold" />
 
-                    <TextView
-                        android:id="@+id/statusMessageField"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="TextView" />
-
-                    <TextView
-                        android:id="@+id/textView13"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Access Token:"
-                        android:textSize="18sp"
-                        android:textStyle="normal|bold" />
-
-                    <TextView
-                        android:id="@+id/accessTokenField"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="TextView" />
-
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/accessTokenField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView" />
 
             </LinearLayout>
 
