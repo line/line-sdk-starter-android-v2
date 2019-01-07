@@ -98,19 +98,17 @@ public class PostLoginActivity extends AppCompatActivity {
             new ImageLoaderTask().execute(pictureUrl.toString());
         }
 
-        TextView profileText;
+        final TextView displayNameField = findViewById(R.id.displayNameField);
+        displayNameField.setText(intentProfile.getDisplayName());
 
-        profileText = findViewById(R.id.displayNameField);
-        profileText.setText(intentProfile.getDisplayName());
+        final TextView userIdField = findViewById(R.id.userIDField);
+        userIdField.setText(intentProfile.getUserId());
 
-        profileText = findViewById(R.id.userIDField);
-        profileText.setText(intentProfile.getUserId());
+        final TextView statusMessageField = findViewById(R.id.statusMessageField);
+        statusMessageField.setText(intentProfile.getStatusMessage());
 
-        profileText = findViewById(R.id.statusMessageField);
-        profileText.setText(intentProfile.getUserId());
-
-        profileText = findViewById(R.id.accessTokenField);
-        profileText.setText(intentCredential.getAccessToken().getAccessToken());
+        final TextView accessTokenField = findViewById(R.id.accessTokenField);
+        accessTokenField.setText(intentCredential.getAccessToken().getAccessToken());
     }
 
     public static class ProfileDialogFragment extends DialogFragment {
@@ -123,20 +121,21 @@ public class PostLoginActivity extends AppCompatActivity {
             LayoutInflater inflater = getActivity().getLayoutInflater();
             View view = inflater.inflate(R.layout.profile_dialog, null);
 
-            TextView textview = view.findViewById(R.id.profileName);
-            textview.setText(profileInfo.getDisplayName());
-            textview = view.findViewById(R.id.profileMessage);
-            textview.setText(profileInfo.getStatusMessage());
-            textview = view.findViewById(R.id.profileMid);
-            textview.setText(profileInfo.getUserId());
+            final TextView profileName = view.findViewById(R.id.profileName);
+            profileName.setText(profileInfo.getDisplayName());
+            final TextView profileMessage = view.findViewById(R.id.profileMessage);
+            profileMessage.setText(profileInfo.getStatusMessage());
+            final TextView profileMid = view.findViewById(R.id.profileMid);
+            profileMid.setText(profileInfo.getUserId());
+
             Uri pictureUrl = profileInfo.getPictureUrl();
-            textview = view.findViewById(R.id.profileImageUrl);
+            final TextView profileImage = view.findViewById(R.id.profileImageUrl);
 
             // If the user's profile picture is not set, the picture url will be null.
             if (pictureUrl != null) {
-                textview.setText(profileInfo.getPictureUrl().toString());
+                profileImage.setText(pictureUrl.toString());
             } else {
-                textview.setText(view.getContext().getResources().getString(R.string.no_profile_image_set));
+                profileImage.setText(view.getContext().getResources().getString(R.string.no_profile_image_set));
             }
 
             view.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
