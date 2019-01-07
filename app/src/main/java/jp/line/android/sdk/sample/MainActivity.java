@@ -14,59 +14,57 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 1;
 
+    private static final String TAG = "ERROR";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final TextView a2aButton = (TextView) findViewById(R.id.login_button);
-        a2aButton.setOnClickListener(new View.OnClickListener() {
+        final TextView appToAppButton = findViewById(R.id.login_button);
+        appToAppButton.setOnClickListener(new View.OnClickListener() {
 
+            @Override
             public void onClick(View v) {
-
                 try {
                     // App to App Login
                     Intent LoginIntent = LineLoginApi.getLoginIntent(v.getContext(), Constants.CHANNEL_ID);
                     startActivityForResult(LoginIntent, REQUEST_CODE);
-
                 } catch (Exception e) {
-                    Log.e("ERROR", e.toString());
+                    Log.e(TAG, e.toString());
                 }
             }
         });
 
-        final TextView browserLoginButton = (TextView) findViewById(R.id.browser_login_button);
+        final TextView browserLoginButton = findViewById(R.id.browser_login_button);
         browserLoginButton.setOnClickListener(new View.OnClickListener() {
 
+            @Override
             public void onClick(View v) {
-
                 try {
                     // Browser Login
-                    Intent LoginIntent = LineLoginApi.getLoginIntentWithoutLineAppAuth(v.getContext(), Constants.CHANNEL_ID);
+                    Intent LoginIntent = LineLoginApi.getLoginIntentWithoutLineAppAuth(v.getContext(),
+                                                                                       Constants.CHANNEL_ID);
                     startActivityForResult(LoginIntent, REQUEST_CODE);
-
                 } catch (Exception e) {
-                    Log.e("ERROR", e.toString());
+                    Log.e(TAG, e.toString());
                 }
             }
-
         });
     }
 
-
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode != REQUEST_CODE) {
-            Log.e("ERROR", "Unsupported Request");
+            Log.e(TAG, "Unsupported Request");
             return;
         }
 
         LineLoginResult result = LineLoginApi.getLoginResultFromIntent(data);
 
         switch (result.getResponseCode()) {
-
             case SUCCESS:
-
                 Intent transitionIntent = new Intent(this, PostLoginActivity.class);
                 transitionIntent.putExtra("line_profile", result.getLineProfile());
                 transitionIntent.putExtra("line_credential", result.getLineCredential());
@@ -74,12 +72,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case CANCEL:
-                Log.e("ERROR", "LINE Login Canceled by user!!");
+                Log.e(TAG, "LINE Login Canceled by user!!");
                 break;
 
             default:
-                Log.e("ERROR", "Login FAILED!");
-                Log.e("ERROR", result.getErrorData().toString());
+                Log.e(TAG, "Login FAILED!");
+                Log.e(TAG, result.getErrorData().toString());
         }
     }
 }

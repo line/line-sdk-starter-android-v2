@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
     android:layout_width="match_parent"
-    android:layout_height="fill_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_margin"
     android:orientation="vertical"
     android:gravity="center"
     tools:context="jp.line.android.sdk.sample.MainActivity">
@@ -22,6 +18,7 @@
         android:text="Login with LINE"
         android:gravity="center"
         android:clickable="true"
+        android:focusable="true"
         android:textColor="#FFFFFF" />
 
     <TextView
@@ -32,5 +29,6 @@
         android:text="Browser Login"
         android:gravity="center"
         android:clickable="true"
-        android:textColor="#FFFFFF"/>
+        android:focusable="true"
+        android:textColor="#FFFFFF" />
 </LinearLayout>
