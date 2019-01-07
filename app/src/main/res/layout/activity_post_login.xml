@@ -65,7 +65,7 @@
                 android:id="@+id/userIDField"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="<<User ID>>" />
+                tools:text="User ID" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -80,7 +80,7 @@
                 android:id="@+id/statusMessageField"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="<< User status message >>" />
+                tools:text="Status message" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -93,7 +93,7 @@
                 android:id="@+id/accessTokenField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="<< Access Token>>" />
+                tools:text="Access Token" />
 
         </LinearLayout>
 
